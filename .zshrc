@@ -70,6 +70,7 @@ alias lc='ls -lh --color=auto --group-directories-first'
 alias gt='urxvt &'
 alias django='python manage.py'
 alias mk='mkdir'
+alias r='ranger-cd'
 
 # handy global aliasses
 alias -g '...'='../../'
