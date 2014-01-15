@@ -1,7 +1,7 @@
 autoload colors && colors
 
 # history settings
-export HISTSIZE=2000
+export HISTSIZE=10000
 export HISTFILE="$HOME/.history"
 export SAVEHIST=$HISTSIZE
 setopt hist_ignore_all_dups
@@ -66,11 +66,18 @@ function precmd {
 
 # aliasses
 alias ls='ls --color=auto'
-alias lc='ls -lh --color=auto --group-directories-first'
 alias gt='urxvt &'
 alias django='python manage.py'
 alias mk='mkdir'
 alias r='ranger-cd'
+
+function lc {
+	# search up for a .gitignore file
+	# and add them to the ls ignore patterns clause -I
+
+	# actual command
+	ls -lh --color=auto --group-directories-first $@
+}
 
 # handy global aliasses
 alias -g '...'='../../'
@@ -130,6 +137,9 @@ function ranger-cd {
     test -f "$tempfile" &&
     if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
         cd -- "$(cat "$tempfile")"
+
+        # show the content of this directory
+        lc
     fi
     rm -f -- "$tempfile"
 }
