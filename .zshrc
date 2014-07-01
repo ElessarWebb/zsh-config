@@ -9,7 +9,11 @@ setopt inc_append_history
 setopt share_history
 
 # disable annoying stuff
-unsetopt autocd beep nomatch notify
+unsetopt beep nomatch notify
+setopt autocd
+setopt pushdsilent
+setopt autopushd
+setopt pushdminus
 
 # leave expansion to _expand
 bindkey '^I' complete-word
@@ -31,7 +35,8 @@ bindkey -M vicmd '^R' redo
 bindkey -M vicmd '^R' redo
 
 # awesome keybindings
-bindkey -M vicmd -s 'T' '^[ Isudo ^[A'
+bindkey -M vicmd -s 'T' '^[ Isimonsays ^[A'
+bindkey -M viins -s '^T' '^[ Isimonsays ^[A'
 
 # editing cmd in vim
 autoload -U edit-command-line
@@ -42,41 +47,41 @@ bindkey -M vicmd v edit-command-line
 # every time the prompt is drawn
 # and set the left prompt
 function precmd {
-	local BAT
+  local BAT
 
-	# set the LPROMPT
-	prompt="
-%{$fg[white]%} { "
-	if [[ "$EUID" = "0" ]] || [[ "$USER" = 'root' ]]
-	then
-		prompt="${prompt}%{$fg[red]%}"
-	else
-		prompt="${prompt}%{$fg[blue]%}"
-	fi
-	prompt="${prompt}%m%{$fg[white]%}: %~ }%{$reset_color%} "
-
-	# set the RPROMPT
-	BAT=`acpi -b \
-		| sed "s/[^:]*:\s*\([^,]*\)\,\s*\([0-9]\+\).*/%{$fg[green]%}\1%{$fg[white]%} \2%%/" \
-		| tr "\n" " "`
-
-	export RPROMPT="%{$fg[white]%}$( date +"%a %d %H:%M" ) :: $BAT% %{$reset_color%}"
-	export PROMPT="$prompt"
+  # set the LPROMPT
+  prompt="
+  %{$fg[white]%}%~"
+  if [[ "$EUID" = "0" ]] || [[ "$USER" = 'root' ]]
+  then
+    prompt="${prompt}%{$fg[red]%}"
+  else
+    prompt="${prompt}%{$fg[cyan]%}"
+  fi
+  prompt="${prompt} >>= %{$fg[white]%}%{$reset_color%} "
 }
 
 # aliasses
 alias ls='ls --color=auto'
 alias gt='urxvt &'
 alias django='python manage.py'
-alias mk='mkdir'
+alias mk='mkdir -p'
 alias r='ranger-cd'
+alias simonsays='sudo'
+alias isaid='sudo'
+alias grep='grep --color=auto'
+alias pc='percol --match-method=regex'
+alias acks='ack --scala'
+alias tm='tmux'
+alias tma='tmux attach'
+alias tmd='tmux detach'
 
 function lc {
-	# search up for a .gitignore file
-	# and add them to the ls ignore patterns clause -I
+  # search up for a .gitignore file
+  # and add them to the ls ignore patterns clause -I
 
-	# actual command
-	ls -lh --color=auto --group-directories-first $@
+  # actual command
+  ls -lh --color=auto --group-directories-first $@
 }
 
 # handy global aliasses
@@ -84,50 +89,62 @@ alias -g '...'='../../'
 alias -g '....'='../../../'
 
 # git aliasses
-alias gits='git status'
-alias gitd='git diff'
-alias gitc='git checkout'
-alias gitdc='git diff --cached'
-alias gitca='git commit --amend'
-alias gitap='git add -p'
-function gitpl {
-	git pull origin `git branch | grep \* | sed 's/\* //'`
+alias g='git'
+alias gs='git status'
+alias gd='git diff'
+alias gdc='git diff --cached'
+alias ga='git add'
+alias gc='git commit'
+alias gap='git add -p'
+function gpl {
+  git pull origin `git branch | grep \* | sed 's/\* //'`
 }
-function gitplr {
-	git pull -r origin `git branch | grep \* | sed 's/\* //'`
+function gplr {
+  git pull -r origin `git branch | grep \* | sed 's/\* //'`
 }
-function gitps {
-	git push origin `git branch | grep \* | sed 's/\* //'`
+function gps {
+  git push origin `git branch | grep \* | sed 's/\* //'`
 }
 
 # open vim using a server name for future reference
 function v {
-	# usage: vim <servername=ROOT>
-	if [ -z $2 ]
-	then
-		# oke this looks convoluted, let's explain:
-		# we ask i3 for the desktop number and let this be the server name per default
-		# such that per default, we open a file on the same space as the terminal we open it from
-		2=`i3-msg --type get_workspaces | python -c \
-			"import sys; import json; print( list( filter( lambda w:\
-			w[ 'focused' ], json.loads( sys.stdin.read() )))[0][ 'num' ])"`
-	fi
+  # usage: vim <servername=ROOT>
+  if [ -z $2 ]
+  then
+    # oke this looks convoluted, let's explain:
+    # we ask i3 for the desktop number and let this be the server name per default
+    # such that per default, we open a file on the same space as the terminal we open it from
+    2=`i3-msg --type get_workspaces | python -c \
+      "import sys; import json; print( list( filter( lambda w:\
+      w[ 'focused' ], json.loads( sys.stdin.read() )))[0][ 'num' ])"`
+  fi
 
-	urxvt -e vim --servername $2 --remote-tab-silent $1 &> /dev/null &
-}
-
-# open a remote tab in gvim
-alias gvimrt='gvimr'
-function gvimr {
-	gvim --remote-tab $1
+  urxvt -e vim --servername $2 --remote-tab-silent $1 &> /dev/null &
 }
 
 # up, up, up the stairs...
 function up {
-	for a in {1..$1}
-	do
-		cd ../
-	done
+  for a in {1..$1}
+  do
+    cd ../
+  done
+}
+# and back, back, back through the alley
+alias back=cd +
+
+# fast find alias
+function ff {
+  find `pwd`/ -regex ".*$1"
+}
+
+# fast find, select
+function ffp {
+  find `pwd`/ -regex ".*$1" | pc
+}
+
+# fast find, select and execute on xargs arguments
+function ffx {
+  find `pwd`/ -regex ".*$1" | pc | xargs $2
 }
 
 # Automatically change the directory in bash after closing ranger
@@ -165,8 +182,7 @@ zstyle ':completion:*' cache-path ~/.zsh/cache
 # list colors
 zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
 
-# Completion Styles
-zstyle ':completion:*::::' completer _expand _complete _ignored _approximate
+# Completion Styles zstyle ':completion:*::::' completer _expand _complete _ignored _approximate
 
 # allow one error for every three characters typed in approximate completer
 zstyle -e ':completion:*:approximate:*' max-errors \
@@ -189,3 +205,7 @@ zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
 
 # ignore completion functions (until the _ignored completer)
 zstyle ':completion:*:functions' ignored-patterns '_*'
+
+# syntax highlighting
+# source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [ "$TMUX" = "" ]; then tmux; fi
