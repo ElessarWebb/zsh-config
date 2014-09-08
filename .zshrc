@@ -75,13 +75,14 @@ alias acks='ack --scala'
 alias tm='tmux'
 alias tma='tmux attach'
 alias tmd='tmux detach'
+alias npm-exec='PATH="`npm bin`:$PATH"'
 
 function lc {
   # search up for a .gitignore file
   # and add them to the ls ignore patterns clause -I
 
   # actual command
-  ls -lh --color=auto --group-directories-first $@
+  ls -gGhF --color=auto --group-directories-first $@
 }
 
 # handy global aliasses
@@ -134,7 +135,7 @@ alias back=cd +
 
 # fast find alias
 function ff {
-  find `pwd`/ -regex ".*$1"
+  find "`pwd`/" -regex ".*$1"
 }
 
 # fast find, select
@@ -145,6 +146,9 @@ function ffp {
 # fast find, select and execute on xargs arguments
 function ffx {
   find `pwd`/ -regex ".*$1" | pc | xargs $2
+}
+function ffxi {
+  find `pwd`/ -iregex ".*$1" | pc | xargs $2
 }
 
 # Automatically change the directory in bash after closing ranger
@@ -207,5 +211,4 @@ zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
 zstyle ':completion:*:functions' ignored-patterns '_*'
 
 # syntax highlighting
-# source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-if [ "$TMUX" = "" ]; then tmux; fi
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
