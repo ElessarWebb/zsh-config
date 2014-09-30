@@ -109,18 +109,7 @@ function gps {
 
 # open vim using a server name for future reference
 function v {
-  # usage: vim <servername=ROOT>
-  if [ -z $2 ]
-  then
-    # oke this looks convoluted, let's explain:
-    # we ask i3 for the desktop number and let this be the server name per default
-    # such that per default, we open a file on the same space as the terminal we open it from
-    2=`i3-msg --type get_workspaces | python -c \
-      "import sys; import json; print( list( filter( lambda w:\
-      w[ 'focused' ], json.loads( sys.stdin.read() )))[0][ 'num' ])"`
-  fi
-
-  urxvt -e vim --servername $2 --remote-tab-silent $1 &> /dev/null &
+  urxvt -e vim --servername "server" --remote-tab-silent $1 &> /dev/null &
 }
 
 # up, up, up the stairs...
@@ -186,7 +175,8 @@ zstyle ':completion:*' cache-path ~/.zsh/cache
 # list colors
 zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
 
-# Completion Styles zstyle ':completion:*::::' completer _expand _complete _ignored _approximate
+# Completion Styles
+zstyle ':completion:*::::' completer _expand _complete _ignored _approximate
 
 # allow one error for every three characters typed in approximate completer
 zstyle -e ':completion:*:approximate:*' max-errors \
@@ -212,3 +202,8 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 
 # syntax highlighting
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source .zsh/plugins/history-substring-search/zsh-history-substring-search.zsh
+
+# bind k and j for VI mode for history substring search
+bindkey -M viins '^k' history-substring-search-up
+bindkey -M viins '^j' history-substring-search-down
