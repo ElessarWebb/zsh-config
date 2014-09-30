@@ -4,6 +4,9 @@ PATH="$PATH:/usr/lib/ruby/gems/2.0.0/"
 PATH="$PATH:/home/arjen/.gem/ruby/2.0.0/bin/"
 PATH="$PATH:/home/arjen/.gem/ruby/2.1.0/bin/"
 
+# cabal bin
+PATH="$PATH:/home/arjen/.cabal/bin"
+
 # let's use my local bin with highest prio
 PATH="/home/arjen/.local/bin/:$PATH"
 
