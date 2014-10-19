@@ -58,7 +58,8 @@ function precmd {
   else
     prompt="${prompt}%{$fg[cyan]%}"
   fi
-  prompt="${prompt} >>= %{$fg[white]%}%{$reset_color%} "
+  # prompt="${prompt} >>= %{$fg[white]%}%{$reset_color%} "
+  prompt="${prompt} λ %{$fg[white]%}%{$reset_color%} "
 }
 
 # aliasses
@@ -109,7 +110,20 @@ function gps {
 
 # open vim using a server name for future reference
 function v {
-  urxvt -e vim --servername "server" --remote-tab-silent $1 &> /dev/null &
+  local server
+  if [[ -z $2 ]]
+  then
+    server="VIMS"
+  else
+    server="$2"
+  fi
+
+  if vim --serverlist | grep -iq "$server"; then
+    echo "$1 >>= $server"
+    vim --servername "$server" --remote "$1"
+  else
+    vim --servername "$server" "$1"
+  fi
 }
 
 # up, up, up the stairs...
@@ -155,7 +169,7 @@ function ranger-cd {
 }
 
 # This binds Ctrl-O to ranger-cd:
-bindkey -s '^O' "ranger-cd\n"
+bindkey -M viins -s '^o' "ranger-cd"
 
 # completion plugins
 fpath=(~/.zsh/completion $fpath)
