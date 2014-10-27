@@ -46,7 +46,7 @@ bindkey -M vicmd v edit-command-line
 # display the correct time and battery data
 # every time the prompt is drawn
 # and set the left prompt
-function precmd {
+function generic_precmd {
   local BAT
 
   # set the LPROMPT
@@ -58,9 +58,25 @@ function precmd {
   else
     prompt="${prompt}%{$fg[cyan]%}"
   fi
-  # prompt="${prompt} >>= %{$fg[white]%}%{$reset_color%} "
+
   prompt="${prompt} λ %{$fg[white]%}%{$reset_color%} "
 }
+
+case $TERM in
+  *rxvt*)
+    # show process name
+		preexec () { print -Pn "\e]0;$1\a" }
+    precmd() {
+      generic_precmd
+
+      # reset
+      print -Pn "\e]0;urxvt \a"
+    }
+    ;;
+  *)
+    generic_precmd
+    ;;
+esac
 
 # aliasses
 alias ls='ls --color=auto'
