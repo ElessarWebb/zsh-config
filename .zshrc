@@ -94,6 +94,9 @@ alias tma='tmux attach'
 alias tmd='tmux detach'
 alias npm-exec='PATH="`npm bin`:$PATH"'
 
+# smart scp
+alias scp='rsync --partial --progress --rsh=ssh'
+
 function lc {
   # search up for a .gitignore file
   # and add them to the ls ignore patterns clause -I
