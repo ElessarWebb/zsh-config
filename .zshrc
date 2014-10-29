@@ -79,7 +79,7 @@ case $TERM in
 esac
 
 # aliasses
-alias ls='ls --color=auto'
+alias vim=/usr/local/bin/vim
 alias gt='urxvt &'
 alias django='python manage.py'
 alias mk='mkdir -p'
@@ -102,7 +102,7 @@ function lc {
   # and add them to the ls ignore patterns clause -I
 
   # actual command
-  ls -gGhF --color=auto --group-directories-first $@
+  gls -gGhF --color=auto --group-directories-first $@
 }
 
 # handy global aliasses
@@ -232,11 +232,3 @@ zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
 
 # ignore completion functions (until the _ignored completer)
 zstyle ':completion:*:functions' ignored-patterns '_*'
-
-# syntax highlighting
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source .zsh/plugins/history-substring-search/zsh-history-substring-search.zsh
-
-# bind k and j for VI mode for history substring search
-bindkey -M viins '^k' history-substring-search-up
-bindkey -M viins '^j' history-substring-search-down
