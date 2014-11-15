@@ -14,6 +14,7 @@ setopt autocd
 setopt pushdsilent
 setopt autopushd
 setopt pushdminus
+setopt interactivecomments
 
 # leave expansion to _expand
 bindkey '^I' complete-word
@@ -62,17 +63,21 @@ function generic_precmd {
   prompt="${prompt} λ %{$fg[white]%}%{$reset_color%} "
 }
 
+# window title management if available
 case $TERM in
+
   *rxvt*)
+
     # show process name
 		preexec () { print -Pn "\e]0;$1\a" }
+
+    # and reset afterwards
     precmd() {
       generic_precmd
-
-      # reset
       print -Pn "\e]0;urxvt \a"
     }
     ;;
+
   *)
     generic_precmd
     ;;
