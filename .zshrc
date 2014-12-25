@@ -98,9 +98,11 @@ alias tm='tmux'
 alias tma='tmux attach'
 alias tmd='tmux detach'
 alias npm-exec='PATH="`npm bin`:$PATH"'
-
-# smart scp
+alias c=xsel -ib
+# smart standards
 alias scp='rsync --partial --progress --rsh=ssh'
+alias cp='rsync -aP --info=progress2'
+alias feh='feh -F'
 
 function lc {
   # search up for a .gitignore file
@@ -240,8 +242,11 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 
 # syntax highlighting
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source .zsh/plugins/history-substring-search/zsh-history-substring-search.zsh
+source ~/.zsh/plugins/history-substring-search/zsh-history-substring-search.zsh
 
 # bind k and j for VI mode for history substring search
 bindkey -M viins '^k' history-substring-search-up
 bindkey -M viins '^j' history-substring-search-down
+
+# aoooooh
+source ~/.zsh/plugins/z/z.sh
