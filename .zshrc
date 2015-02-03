@@ -104,6 +104,10 @@ alias scp='rsync --partial --progress --rsh=ssh'
 alias cp='rsync -aP --info=progress2'
 alias feh='feh -F'
 
+# coding
+alias html='w3m -T text/html'
+alias -g json='-H "Accept: application/json; indent=2"'
+
 function lc {
   # search up for a .gitignore file
   # and add them to the ls ignore patterns clause -I
