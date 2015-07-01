@@ -16,5 +16,9 @@ PATH="/home/arjen/.local/bin/:$PATH"
 # tiling wm's and java apps...
 _JAVA_AWT_WM_NONREPARENTING=1; export _JAVA_AWT_WM_NONREPARENTING
 
+export GOPATH="$HOME/repositories/go"
+export GOBIN="/home/arjen/repositories/go/bin"
+PATH="$PATH:$GOBIN"
+
 # D'OH
 export EDITOR=vim

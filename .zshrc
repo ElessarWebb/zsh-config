@@ -99,10 +99,12 @@ alias tma='tmux attach'
 alias tmd='tmux detach'
 alias npm-exec='PATH="`npm bin`:$PATH"'
 alias c=xsel -ib
+alias sack='ack --scala'
 # smart standards
 alias scp='rsync --partial --progress --rsh=ssh'
-alias cp='rsync -aP --info=progress2'
+alias pcp='rsync -aP --info=progress2'
 alias feh='feh -F'
+alias ssh='TERM=xterm-color ssh'
 
 # coding
 alias html='w3m -T text/html'
@@ -252,5 +254,14 @@ source ~/.zsh/plugins/history-substring-search/zsh-history-substring-search.zsh
 bindkey -M viins '^k' history-substring-search-up
 bindkey -M viins '^j' history-substring-search-down
 
+# ls coloring
+eval $(dircolors ~/.dircolors)
+
 # aoooooh
 source ~/.zsh/plugins/z/z.sh
+
+PATH="/home/arjen/perl5/bin${PATH+:}${PATH}"; export PATH;
+PERL5LIB="/home/arjen/perl5/lib/perl5${PERL5LIB+:}${PERL5LIB}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/arjen/perl5${PERL_LOCAL_LIB_ROOT+:}${PERL_LOCAL_LIB_ROOT}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/arjen/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/arjen/perl5"; export PERL_MM_OPT;
